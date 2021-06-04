@@ -1,0 +1,57 @@
+/* ブレイクポイント */
+$breakpoints: ('sm': (min-width: 640px,
+  ),
+  'md': (min-width: 768px,
+  ),
+  'uti': (min-width: 800px,
+  ),
+  'lg': (min-width: 1024px,
+  ),
+  'xl': (min-width: 1280px,
+  ),
+) !default;
+
+@mixin responsive($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media screen and #{inspect(map-get($breakpoints, $breakpoint))} {
+      @content;
+    }
+  }
+
+  // マップ型で定義されていない値が呼び出された時はエラーを返す
+  @else {
+    @error "指定されたブレークポイントは定義されていません。"+"指定できるブレークポイントは次のとおりです。 -> #{map-keys($breakpoints)}";
+  }
+}
+
+/* ブレイクポイントここまで */
+
+/* 見出し装飾用 */
+@mixin heading {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px solid;
+  border-color: rgba(159, 125, 80, 0.65);
+}
+
+@mixin deco {
+  content: attr(data-en);
+  position: absolute;
+  font-family: 'Stalemate', cursive;
+  font-size: 64px;
+  color: rgba(159, 125, 80, 0.65);
+  letter-spacing: 2px;
+  text-indent: 2px;
+  white-space: nowrap;
+
+  @include responsive(lg) {
+    font-size: 96px;
+  }
+}
+
+@mixin span {
+  position: relative;
+  z-index: 2;
+}
+
+/* 見出し装飾用ここまで */

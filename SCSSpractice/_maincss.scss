@@ -1,0 +1,1268 @@
+// 質問メモ
+// セクションとかかぶるやつの命名のコツ
+// pc,spで同じ素材を使い回して拡大縮小する方法
+
+// 調べる
+// width、heightの数値を避けるコツ
+// positionによるロゴの表示位置を合わせる方法を確認
+
+// 2021/03/20 pc版素材書き出しした、次は名前とsp版作る
+// 2021/03/28 フッターやれるとこまで、主催等と注意事項のテキスト入れた
+// 2021/03/29 リセットCSS調整した,下からshopまで手を加えた
+// 画像の伸縮→ある程度分かってきた、あとは画像のサイズを調整する
+// 余白をレスポンシブ用に設定し直す→一個一個やりながらになりそう
+
+html {
+  scroll-behavior: smooth;
+}
+
+main {
+  // transition: all 0.6s;
+  // filter: blur(8px);
+  overflow: hidden;
+}
+
+h3 {
+  font-size: 24px;
+  font-family: 'ten-mincho', serif;
+  color: #fff;
+  padding-bottom: 15px;
+
+  @include responsive(lg) {
+    font-size: 36px;
+    padding-bottom: 20px;
+    line-height: 53px;
+    letter-spacing: 7.2px;
+  }
+}
+
+h4 {
+  font-size: 36px;
+  line-height: 53px;
+  letter-spacing: 3.6px;
+  margin-bottom: 25px;
+  font-weight: 400;
+  width: 243px;
+  height: 106px;
+
+  @include responsive(lg) {
+    font-size: 48px;
+    line-height: 71px;
+    letter-spacing: 4.8px;
+    margin-bottom: 40px;
+    width: 354px;
+    height: 142px;
+  }
+}
+
+h5 {
+  font-size: 18px;
+
+  @include responsive(lg) {
+    font-size: 24px;
+    line-height: 53px;
+    letter-spacing: 4.8px;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+p {
+  line-height: 21px;
+
+  @include responsive(lg) {
+    line-height: 27px;
+  }
+}
+
+body {
+  margin: 0 auto;
+  max-width: 1440px;
+  background-color: #000;
+  font-family: 'ten-mincho-text', serif;
+  font-size: 14px;
+  // font-weight: 400;
+  // font-style: normal;
+  color: #fff;
+
+  @include responsive(lg) {
+    font-size: 18px;
+  }
+}
+
+// .header {
+//   width: auto;
+//   height: 60px;
+//   background: red;
+// }
+
+/* ヘッダー */
+
+/* ハンバーガーメニュー*/
+.mainblur {
+  /* ぼかし用 メインとヘッダーに */
+  transition: all 0.6s;
+  filter: blur(8px);
+}
+
+// .mainblurnone {
+//   /* ぼかし用 メインとヘッダーに */
+//   transition: all 0.6s;
+//   filter: blur(0px);
+// }
+
+.header {
+  &__nav {
+    /*position:fixed;にし、z-indexの数値を小さくして最背面へ*/
+    position: fixed;
+    z-index: -1;
+    opacity: 0;
+    /*はじめは透過0*/
+    /*ナビの位置と形状*/
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    /*ナビの高さ*/
+    // background: rgba(255, 255, 255, 0); /*背景を少し透過させる*/
+    /*動き*/
+    transition: all 1.2s;
+  }
+
+  /*アクティブクラスがついたら透過なしにして最前面へ*/
+  &__nav.panelactive {
+    opacity: 1;
+    z-index: 999;
+  }
+
+  /*ナビゲーションの縦スクロール*/
+  &__nav.panelactive &__nav-outer {
+    /*ナビの数が増えた場合縦スクロール*/
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    height: 100vh;
+    /*表示する高さ*/
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /*ナビゲーション*/
+  &__nav-list {
+    display: none;
+    /*はじめは非表示*/
+    /*ナビゲーション天地中央揃え*/
+    position: absolute;
+    z-index: 999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    @include responsive(md) {
+      top: 35%;
+      left: 85%;
+      white-space: nowrap;
+    }
+  }
+
+  &__nav.panelactive &__nav-list {
+    display: block;
+  }
+
+  /*リストのレイアウト設定*/
+
+  &__nav-item {
+    text-align: center;
+  }
+
+  &__nav-item-a {
+    // padding:10px;
+    display: block;
+  }
+
+  /* ナビの装飾 */
+  &__nav-item {
+    margin-right: 70px;
+    letter-spacing: 1.8px;
+    text-indent: 1.8px;
+    @include heading;
+    border-bottom: none;
+    height: 94px;
+
+    &::before {
+      @include deco;
+      top: 0%;
+      left: 40%;
+      transform: translate(-50%, -50%);
+
+      @include responsive(lg) {
+        font-size: 64px;
+      }
+    }
+
+    @include responsive(md) {
+      display: block;
+    }
+
+    @include responsive(lg) {
+      display: inline-block;
+    }
+  }
+
+  &__nav-item-span {
+    @include span;
+    font-size: 18px;
+    top: 40%;
+    /* ナビ装飾ここまで */
+  }
+
+  @include responsive(lg) {
+    /* PCサイズのナビゲーション */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+
+    &__nav {
+      display: flex;
+      /* sp仕様から修正 */
+      /*position:fixed;にし、z-indexの数値を小さくして最背面へ*/
+      position: relative;
+      opacity: 1;
+      /*ナビの位置と形状*/
+      height: 94px;
+      background: none;
+      transition: none;
+    }
+
+    &__nav-list {
+      /* sp仕様から修正 */
+      display: flex;
+      /*はじめは非表示*/
+      /*ナビゲーション天地中央揃え*/
+      position: absolute;
+      top: 60%;
+      left: 40%;
+      transform: none;
+
+      @include responsive(xl) {
+        left: 50%;
+      }
+    }
+
+    &__nav-item {
+      text-align: center;
+    }
+  }
+}
+
+/* ハンバーガーボタンの形 */
+.header {
+  &__hamburger {
+    /* ボタン外側 */
+    // position: relative;
+    position: fixed;
+    z-index: 9999;
+    cursor: pointer;
+    left: 85%;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+
+    @include responsive(lg) {
+      display: none;
+    }
+  }
+
+  &__hamburger-span {
+    /*ボタン内側*/
+    display: inline-block;
+    transition: all 0.6s;
+    position: absolute;
+    height: 3px;
+    border-radius: 30px;
+    background: #9f7d50;
+    width: 40px;
+
+    &:nth-of-type(1) {
+      top: 20px;
+    }
+
+    &:nth-of-type(2) {
+      top: 31px;
+    }
+
+    &:nth-of-type(3) {
+      top: 42px;
+    }
+
+    &.active:nth-of-type(1),
+    &.active:nth-of-type(3) {
+      /*jQでactiveクラスを付与して一本に*/
+      top: 31px;
+    }
+
+    @include responsive(lg) {
+      display: none;
+    }
+  }
+}
+
+/* ハンバーガーボタンの形ここまで */
+
+/* ヘッダー出し入れアニメーション用 */
+@include responsive(lg) {
+  /*上に上がる動き*/
+
+  #header.upmove {
+    animation: upanime 1.5s forwards;
+  }
+
+  @keyframes upanime {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
+  }
+
+  /*下に下がる動き*/
+
+  #header.downmove {
+    animation: downanime 1.5s forwards;
+  }
+
+  @keyframes downanime {
+    from {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ヘッダー出し入れアニメーション用ここまで */
+
+
+/* ナビここまで */
+
+.main {
+  width: 100%;
+}
+
+/* メインビジュアル */
+.mv-section {
+  // height: 418px;
+  position: relative;
+  // &__picture {
+  //   object-fit: cover;
+  //   height: 300px;
+  //   object-position: 50% 50%;
+  // }
+  // @include responsive(lg){
+  //   height: 845px;
+  // }
+
+  &__bg {
+    height: 418px;
+    width: auto;
+    background: url(img/bg.jpeg) no-repeat;
+    background-position: 60% -80%;
+    background-size: 190%;
+
+    @include responsive(md) {
+      height: 600px;
+      background-position: 65% -80%;
+      background-size: 150%;
+    }
+
+    @include responsive(lg) {
+      height: 845px;
+      background-position: 70% -80%;
+      background-size: 130%;
+    }
+
+    @include responsive(xl) {
+      background-position: 70% 187%;
+    }
+  }
+
+  &__img-outer {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    // height: 281px;
+    // width: 314px;
+  }
+
+  &__img {
+    width: 267px;
+
+    @include responsive(lg) {
+      width: 528px;
+    }
+  }
+}
+
+/* コンセプト */
+.concept-section {
+  // max-height: 1830px;
+
+  /* 見出し */
+  &__heading-outer {
+    margin-top: 90px;
+    padding-top: 60px;
+    text-align: center;
+
+    @include responsive(lg) {
+      margin-top: 220px;
+      padding-top: 80px;
+    }
+  }
+
+  &__heading {
+    // padding-top: 50px;
+    letter-spacing: 4.8px;
+    text-indent: 4.8px;
+    @include heading;
+  }
+
+  &__heading::before {
+    @include deco;
+    top: -30px;
+    left: -16px;
+
+    @include responsive(lg) {
+      left: -45px;
+    }
+  }
+
+  &__heading-span {
+    @include span;
+  }
+
+  /* 見出しここまで */
+
+  &__img-outer1 &__img-outer2 {
+    margin-top: 50px;
+    text-align: center;
+  }
+
+  /* リード文とあしらい */
+  /* 1 */
+  &__lead1 {
+    @include responsive(md) {
+      display: flex;
+      justify-content: space-between;
+      // position: relative;
+    }
+  }
+
+  &__img-outer1 {
+    @include responsive(md) {
+      // position: relative;
+    }
+  }
+
+  &__caption1 {
+    margin: 5% 5% 0 5%;
+    position: relative;
+    z-index: 2;
+
+    @include responsive(lg) {
+      // position: absolute;
+      margin: 23% 10% 0 5%;
+      padding-left: 5%;
+    }
+  }
+
+  &__p1 {
+    line-height: 28px;
+    letter-spacing: 1.4px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+
+    @include responsive(lg) {
+      // position: absolute;
+      width: 439px;
+      line-height: 36px;
+      letter-spacing: 1.8px;
+    }
+  }
+
+  &__candle-outer1 {
+    position: absolute;
+    right: 10%;
+    top: 0%;
+
+    @include responsive(md) {
+      // position: absolute;
+      right: 3%;
+      top: -16%;
+    }
+  }
+
+  &__candle1 {
+    // max-width: 115px;
+    // max-height: 467px;
+    width: 63px;
+    opacity: 0.55;
+    z-index: 1;
+
+    @include responsive(md) {
+      width: 50px;
+    }
+
+    @include responsive(lg) {
+      width: 85px;
+    }
+
+    @include responsive(xl) {
+      width: 115px;
+    }
+  }
+
+  &__img1 {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+
+    @include responsive(lg) {
+      width: 180%;
+      height: auto;
+    }
+
+    @include responsive(xl) {
+      width: 125%;
+    }
+  }
+
+  /* 2 */
+  &__lead2 {
+    @include responsive(md) {
+      display: flex;
+      justify-content: space-between;
+      // position: relative;
+    }
+  }
+
+  &__img-outer2 {
+    @include responsive(md) {
+      // position: relative;
+      order: 2;
+    }
+  }
+
+  &__caption2 {
+    margin: 0 5%;
+    position: relative;
+    z-index: 2;
+
+    @include responsive(md) {
+      // position: absolute;
+      order: 1;
+      margin: 20% 0% 0 5%;
+      padding-left: 5%;
+    }
+  }
+
+  &__heading2 {
+    z-index: 4;
+  }
+
+  &__p2 {
+    line-height: 28px;
+    letter-spacing: 1.4px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 3;
+
+    @include responsive(lg) {
+      // position: absolute;
+      width: 439px;
+      line-height: 36px;
+      letter-spacing: 1.8px;
+    }
+  }
+
+  &__candle-outer2 {
+    position: absolute;
+    right: 10%;
+    top: 0%;
+
+    @include responsive(md) {
+      // position: absolute;
+      left: 0%;
+      top: -12%;
+    }
+  }
+
+  &__candle2 {
+    // max-width: 115px;
+    // max-height: 467px;
+    width: 63px;
+    opacity: 0.55;
+    z-index: 1;
+
+    @include responsive(lg) {
+      width: 115px;
+    }
+  }
+
+  &__img2 {
+    width: 100%;
+    height: 500px;
+    // -o-object-fit: none;
+    object-fit: cover;
+
+    @include responsive(lg) {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  /* リード文とあしらいここまで */
+}
+
+/* アクセス・マップ */
+.access-section {
+  margin: 100px 5% 0 5%;
+  text-align: center;
+
+  /* 見出し */
+  &__heading-outer {
+    padding-top: 50px;
+    text-align: center;
+  }
+
+  &__heading {
+    letter-spacing: 2.4px;
+    text-indent: 2.4px;
+    @include heading;
+  }
+
+  &__heading::before {
+    @include deco;
+    top: -78%;
+    left: -12%;
+
+    @include responsive(lg) {
+      top: -15px;
+    }
+  }
+
+  &__heading-span {
+    @include span;
+  }
+
+  /* 見出しここまで */
+
+  &__caption {
+    margin-top: 40px;
+  }
+
+  &__p {
+    margin-top: 10px;
+    letter-spacing: 1.4px;
+
+    @include responsive(lg) {
+      margin-top: 20px;
+    }
+  }
+
+  &__p:first-child {
+    margin-top: 0;
+  }
+
+  &__img {
+    min-width: 314px;
+    min-height: 246px;
+    max-width: 648px;
+    max-height: 506px;
+    margin-top: 25px;
+
+    @include responsive(lg) {
+      margin-top: 5%;
+    }
+  }
+
+  @include responsive(lg) {
+    margin-top: 190px;
+  }
+}
+
+/* 協力店舗 */
+.shop-section {
+  margin: 150px 8% 0 8%;
+
+  /* 見出し */
+  &__heading-outer {
+    padding-top: 60px;
+    text-align: center;
+  }
+
+  &__heading {
+    letter-spacing: 4.8px;
+    text-indent: 4.8px;
+    @include heading;
+  }
+
+  &__heading::before {
+    @include deco;
+    top: -40px;
+    left: 51px;
+
+    @include responsive(lg) {
+      top: -25px;
+    }
+  }
+
+  &__heading-span {
+    @include span;
+  }
+
+  /* 見出しここまで */
+
+  /* 説明 */
+  &__caption {
+    margin-top: 40px;
+  }
+
+  &__p {
+    margin-bottom: 10px;
+    line-height: 21px;
+    letter-spacing: 1.4px;
+
+    @include responsive(md) {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+  }
+
+  /* 説明ここまで */
+
+  &__list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-around;
+    margin-top: 50px;
+
+    @include responsive(lg) {
+      margin-top: 0;
+    }
+  }
+
+  &__item {
+    border: 1px solid #9f7d50;
+    max-width: 315px;
+    margin: 5% 0 0 0;
+
+    &:hover {
+      transition: 0.5s ease-in-out;
+      background-color: #151515;
+    }
+  }
+
+  &__pic {
+    max-width: 313px;
+
+    &:hover {
+      transition: 0.5s ease-in-out;
+      // opacity: 0.8;
+      filter: blur(3px);
+    }
+  }
+
+  &__txt {
+    color: #fff;
+    // background-color: #d98732;
+    padding: 5% 28%;
+    text-align: center;
+    // white-space: nowrap;
+    font-family: 'ten-mincho', serif;
+    font-size: 18px;
+    line-height: 27px;
+  }
+
+  /* ボタン */
+  &__button-outer {
+    height: 55px;
+    margin: 40px auto 0 auto;
+    position: relative;
+
+    @include responsive(lg) {
+      margin: 5% auto 0 auto;
+    }
+  }
+
+  &__button {
+    border-radius: 100vh;
+    background-color: #d98732;
+    width: 300px;
+    height: 55px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 55px;
+    letter-spacing: 1.6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    &:hover {
+      transition: 0.5s ease-in-out;
+      background: #ff9b33;
+    }
+  }
+
+  @include responsive(lg) {
+    margin-top: 190px;
+  }
+}
+
+/* ボタンここまで */
+
+/* 新着情報*/
+.news-section {
+  margin-top: 80px;
+  padding-top: 70px;
+
+  // background: red;
+  /* 見出し */
+  &__heading-outer {
+    // position: relative;
+    // left: 30%;
+    text-align: center;
+  }
+
+  &__heading {
+    letter-spacing: 4.8px;
+    text-indent: 4.8px;
+    @include heading;
+  }
+
+  &__heading::before {
+    @include deco;
+    top: -40px;
+    left: -25px;
+
+    @include responsive(lg) {
+      top: -25px;
+    }
+  }
+
+  &__heading-span {
+    @include span;
+  }
+
+  /* 見出しここまで */
+
+  /* 行全体 */
+  &__list {
+    padding-top: 60px;
+  }
+
+  &__item {
+    margin: 0 5%;
+
+    // margin: 0 1.33em;
+    &:first-child {
+      border-top: 1px solid #9f7d50;
+    }
+
+    display: block;
+    border-bottom: 1px solid #9f7d50;
+
+    &:hover {
+      transition: 0.3s ease-in-out;
+      background-color: #222;
+    }
+
+    @include responsive(lg) {
+      margin: 0 10%;
+    }
+  }
+
+  /* テキスト全体 */
+  &__inner {
+    position: relative;
+    display: flex;
+    color: #fff;
+    padding: 16px 17px 16px 10px;
+    transition: 0.2s ease;
+
+    /* >のあしらい */
+    &::after {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%) rotate(-45deg);
+      right: 5%;
+      // z-index: 1;
+      content: '';
+      border: solid #fff;
+      border-width: 0 1px 1px 0;
+      padding: 4px;
+    }
+
+    @include responsive(lg) {
+      padding: 30px 17px 30px 10px;
+
+      &::after {
+        right: 10%;
+      }
+    }
+  }
+
+  &__date {
+    display: block;
+    width: 6.5em;
+    margin: auto 0;
+
+    // padding-right: 20px;
+    // color: #c8a063;
+    // line-height: 22px;
+    @include responsive(lg) {
+      width: 12em;
+      text-align: center;
+    }
+  }
+
+  &__txt {
+    display: block;
+    // font-weight: 400;
+    // line-height: 18px;
+    color: #fff;
+
+    @include responsive(lg) {
+      margin: 0 5%;
+    }
+  }
+
+  @include responsive(lg) {
+    margin-top: 110px;
+    padding-top: 80px;
+  }
+}
+
+/* 新着情報ここまで */
+
+/* 注意事項 */
+.warn-section {
+  // max-height: 560px;
+  // text-align: center;
+  margin: 150px 8% 0 8%;
+
+  // background: red;
+  // position: relative;
+  //   &_wrap {
+  //     position: absolute;
+  //     left: 50%;
+  //     transform: translateX(-50%);
+  //   }
+  /* 見出し */
+  &__heading-outer {
+    margin-top: 50px;
+    text-align: center;
+  }
+
+  &__heading {
+    letter-spacing: 4.8px;
+    text-indent: 4.8px;
+    @include heading;
+  }
+
+  &__heading::before {
+    @include deco;
+    top: -40px;
+    left: -25px;
+
+    @include responsive(lg) {
+      top: -25px;
+    }
+  }
+
+  &__heading-span {
+    @include span;
+  }
+
+  /* 見出しここまで */
+
+  &__caption {
+    margin-top: 40px;
+  }
+
+  &__caption-p {
+    margin-top: 10px;
+
+    @include responsive(md) {
+      margin-top: 30px;
+      text-align: center;
+    }
+  }
+
+  /* コロナ見出し */
+  &__colona-heading-outer {
+    height: 105px;
+    padding: 50px auto 20px auto;
+    position: relative;
+
+    @include responsive(lg) {
+      padding: 30px auto 0 auto;
+    }
+  }
+
+  &__colona-heading {
+    background-color: #9f7d50;
+    width: 250px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* コロナ見出しここまで */
+  &__colona-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      'item1 item1 item1 item1'
+      'item2 . . item3';
+
+    @include responsive(md) {
+      grid-template-areas:
+        'item2 item1 item1 item3'
+        'item2 item1 item1 item3';
+    }
+  }
+
+  &__colona-item1 {
+    grid-area: item1;
+  }
+
+  &__colona-item2 {
+    grid-area: item2;
+    margin-top: 30px;
+    text-align: left;
+
+    @include responsive(lg) {
+      text-align: center;
+    }
+  }
+
+  &__colona-item3 {
+    grid-area: item3;
+    margin-top: 30px;
+    text-align: right;
+
+    @include responsive(lg) {
+      text-align: center;
+    }
+  }
+
+  &__colona-p {
+    margin-bottom: 10px;
+    line-height: 28px;
+    letter-spacing: 0.5px;
+
+    @include responsive(lg) {
+      margin-bottom: 30px;
+      line-height: 30px;
+      letter-spacing: 3.5px;
+    }
+  }
+
+  &__colona-img {
+    width: 100px;
+  }
+
+  @include responsive(lg) {
+    margin-top: 190px;
+  }
+}
+
+.etc-section {
+  padding-top: 150px;
+  padding-bottom: 100px;
+  max-height: 820px;
+  // background: blue;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: space-evenly;
+  text-align: center;
+
+  &__box:last-child {
+    margin-top: 100px;
+
+    @include responsive(uti) {
+      margin-top: 0;
+    }
+  }
+
+  &__heading-outer {
+    text-align: center;
+  }
+
+  &__heading {
+    letter-spacing: 7.3px;
+    text-indent: 7.3px;
+    @include heading;
+  }
+
+  &__heading::before {
+    @include deco;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    @include responsive(lg) {
+      top: 20px;
+    }
+  }
+
+  &__heading-span {
+    @include span;
+  }
+
+  &__wrap {
+    width: 400px;
+    margin: 0 auto;
+    padding-top: 40px;
+  }
+
+  &__outer {
+    display: flex;
+    // justify-content: center;
+    padding-top: 15px;
+    position: relative;
+    left: 30%;
+  }
+
+  &__outer:first-child {
+    padding-top: 0;
+  }
+
+  &__h5 {
+    padding-right: 25px;
+  }
+
+  &__text {
+    position: relative;
+    margin: auto 0;
+  }
+
+  &__text-outer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__text2 {
+    padding-top: 15px;
+  }
+
+  @include responsive(lg) {
+    margin-top: 190px;
+    margin-bottom: 150px;
+  }
+}
+
+.footer {
+  // text-align: centerが親要素でしか適用されないのはなぜ？
+  // 画像はobject-fitでやってみる
+  width: auto;
+  max-height: 617px;
+  // max-height: 617px;
+  // background: red;
+  position: relative;
+
+  // &__pagetop {
+  //   // margin: 0 auto 100px auto;
+  //   position: absolute;
+  //   top: -35%;
+  //   left: 50%;
+  //   transform: translateX(-50%);
+  //   display: block;
+  // }
+
+  // &__pagetop-icon {
+  //   height: 80px;
+  //   cursor: pointer;
+  //   z-index: 9999;
+  // }
+
+  &__img-outer {
+    text-align: center;
+    // background-image: url(img/sp/pic6.png);
+    // background-position: center;
+  }
+
+  &__img {
+    width: 80%;
+    max-width: 1440px;
+    min-height: 231px;
+    max-height: 427px;
+    object-fit: cover;
+  }
+
+  &__copy {
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    // width: 100%;
+    // display: inline-block;
+    // margin-bottom: 50px;
+  }
+}
+
+/* 全体：ふわっと出るアニメーション */
+.fadein {
+  animation-name: fadein;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* 時間差フェードイン研究中 */
+// .fadein {
+//   opacity: 0;
+// }
+
+// .show {
+//   transition-duration: 0.5s;
+//   opacity: 1;
+// }
+
+/* 全体：ふわっと出るアニメーションここまで */
