@@ -62,11 +62,11 @@ function fadeanime() {
 /* 各要素のふわっと表示ここまで */
 
 
-/*  ページ読み込み時に適用 */
-$(window).on('load', function () {
-  scrollanime();
-  fadeanime();
-});
+// /*  ページ読み込み時に適用 */
+// $(window).on('load', function () {
+//   scrollanime();
+//   fadeanime();
+// });
 
 /*  画面スクロール時に適用 */
 $(window).scroll(function () {
